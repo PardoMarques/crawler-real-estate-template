@@ -1,0 +1,10 @@
+requests
+pandas
+numpy
+scrapy
+playwright
+scrapy-playwright
+jupyter
+seaborn
+matplotlib
+torch
