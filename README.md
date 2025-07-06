@@ -72,7 +72,7 @@ jupyter notebook notebooks/exploracao_inicial.ipynb
 
 ┌── src/
 │
-├── coleta/ # Crawlers e coletores (Scrapy, Playwright)
+├── REAL_STATES/ # Crawlers e coletores (Scrapy, Playwright)
 ├── processamento/ # Normalização, ETL, transformação de dados
 ├── banco_dados/ # Scripts de integração com bancos/armazenamento
 ├── analises/
