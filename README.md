@@ -9,8 +9,8 @@ Projeto de Data Science voltado à análise de dados do mercado imobiliário, ut
 ### 1. Clone este repositório
 
 ```bash
-git clone https://github.com/PardoMarques/ds_real_estate_analysis.git
-cd ds_real_state_analysis
+git clone https://github.com/pardomarques/ds_real_estate_analysis.git
+cd ds_real_estate_analysis
 ```
 
 ### 2. Crie e ative um ambiente virtual
@@ -42,6 +42,7 @@ playwright install
 ```
 
 ### 4. Execute os scripts principais
+
 ```bash
 python src/collect.py
 python src/normalize.py
@@ -51,6 +52,7 @@ jupyter notebook notebooks/exploracao_inicial.ipynb
 ---
 
 ## Organização
+
 - `src/` — Scripts de coleta (Scrapy/Playwright), normalização, banco de dados e utilidades.
 - `data/` — Dados brutos e processados (não são versionados).
 - `notebooks/` — Análises, explorações e modelos de ML/DL.
@@ -59,10 +61,11 @@ jupyter notebook notebooks/exploracao_inicial.ipynb
 ---
 
 ## Observações
+
 - O projeto no momento não tem fins financeiros
 
 ---
 
 ## OBJETIVO:
-- Aplicar todos os conceitos apresentados na ISTQB CT-AI
 
+- Aplicar todos os conceitos apresentados na ISTQB CT-AI

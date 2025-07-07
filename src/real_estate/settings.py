@@ -1,4 +1,4 @@
-# Scrapy settings for real_state project
+# Scrapy settings for real_estate project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -7,17 +7,17 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = "real_state"
+BOT_NAME = "real_estate"
 
-SPIDER_MODULES = ["real_state.spiders"]
-NEWSPIDER_MODULE = "real_state.spiders"
+SPIDER_MODULES = ["real_estate.spiders"]
+NEWSPIDER_MODULE = "real_estate.spiders"
 
 ADDONS = {}
 
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = "real_state (+http://www.yourdomain.com)"
+#USER_AGENT = "real_estate (+http://www.yourdomain.com)"
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
@@ -42,13 +42,13 @@ DOWNLOAD_DELAY = 2  # Espera 2 segundos entre requests
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    "real_state.middlewares.RealStateSpiderMiddleware": 543,
+#    "real_estate.middlewares.RealStateSpiderMiddleware": 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    "real_state.middlewares.RealStateDownloaderMiddleware": 543,
+#    "real_estate.middlewares.RealStateDownloaderMiddleware": 543,
 #}
 
 # Enable or disable extensions
@@ -60,7 +60,7 @@ DOWNLOAD_DELAY = 2  # Espera 2 segundos entre requests
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 #ITEM_PIPELINES = {
-#    "real_state.pipelines.RealStatePipeline": 300,
+#    "real_estate.pipelines.RealStatePipeline": 300,
 #}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
