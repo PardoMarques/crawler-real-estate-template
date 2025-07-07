@@ -3,9 +3,9 @@ import scrapy
 class EvidenceimoveisSpider(scrapy.Spider):
     name = "EvidenceImoveis"
     allowed_domains = ["www.evidenceimoveis.com.br"]
-    start_urls = ["https://www.evidenceimoveis.com.br/busca/comprar/cidade/sao-paulo/bairros/analia-franco/categoria/apartamento/valor_de/250000/valor_ate/1500000/dormitorios/2/vagas/1/suites/1/area/70/1/"] 
+    start_urls = ["https://www.evidenceimoveis.com.br/busca/comprar/cidade/sao-paulo/bairros/agua-rasa_alto-da-mooca_analia-franco_belem_belenzinho_cangaiba_carrao_chacara-belenzinho_chacara-california_chacara-mafalda_cidade-mae-do-ceu_itaquera_jardim-analia-franco_jardim-textil_maranhao_mooca_mooca-baixa_parque-da-vila-prudente_parque-sao-jorge_penha_penha-de-franca_quinta-da-paineira_sacoma_tatuape_vila-alpina_vila-antonina_vila-brasilina_vila-carrao_vila-centenario_vila-diva-zona-leste_vila-ema_vila-formosa_vila-gomes-cardim_vila-invernada_vila-matilde_vila-nova-manchester_vila-prudente_vila-regente-feijo_vila-santa-clara_vila-santa-isabel_vila-zelina_vila-zilda/categoria/apartamento/valor_de/250000/valor_ate/10000000000/dormitorios/2/vagas/1/suites/1/area/40/1/"]
     
-    #["https://www.evidenceimoveis.com.br/busca/comprar/cidade/sao-paulo/bairros/agua-rasa_alto-da-mooca_analia-franco_belem_belenzinho_cangaiba_carrao_chacara-belenzinho_chacara-california_chacara-mafalda_cidade-mae-do-ceu_itaquera_jardim-analia-franco_jardim-textil_maranhao_mooca_mooca-baixa_parque-da-vila-prudente_parque-sao-jorge_penha_penha-de-franca_quinta-da-paineira_sacoma_tatuape_vila-alpina_vila-antonina_vila-brasilina_vila-carrao_vila-centenario_vila-diva-zona-leste_vila-ema_vila-formosa_vila-gomes-cardim_vila-invernada_vila-matilde_vila-nova-manchester_vila-prudente_vila-regente-feijo_vila-santa-clara_vila-santa-isabel_vila-zelina_vila-zilda/categoria/apartamento/valor_de/250000/valor_ate/10000000000/dormitorios/2/vagas/1/suites/1/area/40/1/"]
+    # exemplo: ["https://www.evidenceimoveis.com.br/busca/comprar/cidade/sao-paulo/bairros/analia-franco/categoria/apartamento/valor_de/250000/valor_ate/1500000/dormitorios/2/vagas/1/suites/1/area/70/1/"] 
 
     def parse(self, response):
         blocos_imoveis = response.css("#resultados div.box-imovel")
