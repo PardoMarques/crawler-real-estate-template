@@ -1,4 +1,4 @@
-# ds_real_state_analysis
+# ds_real_estate_analysis
 
 Projeto de Data Science voltado à análise de dados do mercado imobiliário, utilizando webscraping dinâmico (Playwright, Scrapy) e técnicas avançadas de Machine Learning/Deep Learning.
 
@@ -9,7 +9,7 @@ Projeto de Data Science voltado à análise de dados do mercado imobiliário, ut
 ### 1. Clone este repositório
 
 ```bash
-git clone https://github.com/seuusuario/ds_real_state_analysis.git
+git clone https://github.com/PardoMarques/ds_real_estate_analysis.git
 cd ds_real_state_analysis
 ```
 
@@ -72,7 +72,7 @@ jupyter notebook notebooks/exploracao_inicial.ipynb
 
 ┌── src/
 │
-├── REAL_STATES/ # Crawlers e coletores (Scrapy, Playwright)
+├── REAL_ESTATES/ # Crawlers e coletores (Scrapy, Playwright)
 ├── processamento/ # Normalização, ETL, transformação de dados
 ├── banco_dados/ # Scripts de integração com bancos/armazenamento
 ├── analises/
