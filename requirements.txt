@@ -8,3 +8,4 @@ jupyter
 seaborn
 matplotlib
 torch
+rapidfuzz

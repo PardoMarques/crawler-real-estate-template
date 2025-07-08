@@ -1,11 +1,16 @@
+from datetime import datetime
+from real_estate.items import ImovelItem
 import scrapy
 
 class EvidenceimoveisSpider(scrapy.Spider):
     name = "EvidenceImoveis"
     allowed_domains = ["www.evidenceimoveis.com.br"]
-    start_urls = ["https://www.evidenceimoveis.com.br/busca/comprar/cidade/sao-paulo/bairros/agua-rasa_alto-da-mooca_analia-franco_belem_belenzinho_cangaiba_carrao_chacara-belenzinho_chacara-california_chacara-mafalda_cidade-mae-do-ceu_itaquera_jardim-analia-franco_jardim-textil_maranhao_mooca_mooca-baixa_parque-da-vila-prudente_parque-sao-jorge_penha_penha-de-franca_quinta-da-paineira_sacoma_tatuape_vila-alpina_vila-antonina_vila-brasilina_vila-carrao_vila-centenario_vila-diva-zona-leste_vila-ema_vila-formosa_vila-gomes-cardim_vila-invernada_vila-matilde_vila-nova-manchester_vila-prudente_vila-regente-feijo_vila-santa-clara_vila-santa-isabel_vila-zelina_vila-zilda/categoria/apartamento/valor_de/250000/valor_ate/10000000000/dormitorios/2/vagas/1/suites/1/area/40/1/"]
     
-    # exemplo: ["https://www.evidenceimoveis.com.br/busca/comprar/cidade/sao-paulo/bairros/analia-franco/categoria/apartamento/valor_de/250000/valor_ate/1500000/dormitorios/2/vagas/1/suites/1/area/70/1/"] 
+    exemplo_05 = ["https://www.evidenceimoveis.com.br/busca/comprar/cidade/sao-paulo/bairros/analia-franco/categoria/apartamento/valor_de/1000000/valor_ate/1500000/dormitorios/2/vagas/1/suites/1/area/150/1/"]
+    exemplo_15 = ["https://www.evidenceimoveis.com.br/busca/comprar/cidade/sao-paulo/bairros/analia-franco/categoria/apartamento/valor_de/1000000/valor_ate/1500000/dormitorios/2/vagas/1/suites/1/area/100/1/"]
+    todos_zl = ["https://www.evidenceimoveis.com.br/busca/comprar/cidade/sao-paulo/bairros/agua-rasa_alto-da-mooca_analia-franco_belem_belenzinho_cangaiba_carrao_chacara-belenzinho_chacara-california_chacara-mafalda_cidade-mae-do-ceu_itaquera_jardim-analia-franco_jardim-textil_maranhao_mooca_mooca-baixa_parque-da-vila-prudente_parque-sao-jorge_penha_penha-de-franca_quinta-da-paineira_sacoma_tatuape_vila-alpina_vila-antonina_vila-brasilina_vila-carrao_vila-centenario_vila-diva-zona-leste_vila-ema_vila-formosa_vila-gomes-cardim_vila-invernada_vila-matilde_vila-nova-manchester_vila-prudente_vila-regente-feijo_vila-santa-clara_vila-santa-isabel_vila-zelina_vila-zilda/categoria/apartamento/valor_de/250000/valor_ate/10000000000/dormitorios/2/vagas/1/suites/1/area/40/1/"]
+
+    start_urls = exemplo_05
 
     def parse(self, response):
         blocos_imoveis = response.css("#resultados div.box-imovel")
@@ -36,7 +41,10 @@ class EvidenceimoveisSpider(scrapy.Spider):
             else:
                 codigo = None
             
+            
+            date_str = response.headers.get('Date', b'').decode('utf-8')
             dados_basicos = {
+                "imobiliaria": "EvidenceImoveis",
                 "codigo": codigo,
                 "url_detalhes": url_detalhes,
                 "url_img": url_img,
@@ -47,6 +55,7 @@ class EvidenceimoveisSpider(scrapy.Spider):
                 "dormitorios": dormitorios,
                 "metragem": metragem,
                 "vagas": vagas,
+                "data_captura": datetime.strptime(date_str[:-4], "%a, %d %b %Y %H:%M:%S").strftime("%Y-%m-%d") if date_str else None,
             }
             
             # Segue para página de detalhes (mantendo os dados já coletados)
@@ -63,22 +72,30 @@ class EvidenceimoveisSpider(scrapy.Spider):
 
     def parse_detail(self, response):
         dados = response.meta['dados_basicos']
-        
-        # Campos detalhados
+
         endereco = ''.join(response.css('.tx-ficha span ::text').getall()).strip()
         descricao = response.css(".tx-ficha.mt-4 .tx::text").get()
         iptu = response.css(".box-side .valor ul li:nth-child(1)::text").get()
         condominio = response.css(".box-side .valor ul li:nth-child(2)::text").get()
         caracteristicas = response.css(".dts-imovel li::text").getall()
-        
-        # ...
 
-        # Adicionando os dados detalhados ao dicionário
-        dados['endereco'] = endereco
-        dados['descricao'] = descricao
-        dados['iptu'] = iptu
-        dados['condominio'] = condominio
-        dados['caracteristicas'] = caracteristicas
-
-        # Salvar/exportar o item completo
-        yield dados
+        # Não muda mais nada, só instancia o Item na hora do yield
+        yield ImovelItem(
+            imobiliaria=dados.get("imobiliaria"),
+            codigo=dados.get("codigo"),
+            url_detalhes=dados.get("url_detalhes"),
+            url_img=dados.get("url_img"),
+            preco=dados.get("preco"),
+            bairro=dados.get("bairro"),
+            cidade=dados.get("cidade"),
+            tipo=dados.get("tipo"),
+            dormitorios=dados.get("dormitorios"),
+            metragem=dados.get("metragem"),
+            vagas=dados.get("vagas"),
+            data_captura=dados.get("data_captura"),
+            endereco=endereco,
+            descricao=descricao,
+            iptu=iptu,
+            condominio=condominio,
+            caracteristicas=caracteristicas,
+        )
