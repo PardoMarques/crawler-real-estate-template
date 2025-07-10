@@ -27,6 +27,11 @@ ROBOTSTXT_OBEY = False
 CONCURRENT_REQUESTS_PER_DOMAIN = 1
 DOWNLOAD_DELAY = 2  # Espera 2 segundos entre requests
 
+
+ITEM_PIPELINES = {
+    'real_estate.pipelines.CleanRealStatePipeline': 300,
+}
+
 # Disable cookies (enabled by default)
 #COOKIES_ENABLED = False
 
@@ -59,9 +64,7 @@ DOWNLOAD_DELAY = 2  # Espera 2 segundos entre requests
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    "real_estate.pipelines.RealStatePipeline": 300,
-#}
+
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html

@@ -9,3 +9,7 @@ seaborn
 matplotlib
 torch
 rapidfuzz
+llama-index
+llama-index-llms-ollama
+tqdm
+streamlit
