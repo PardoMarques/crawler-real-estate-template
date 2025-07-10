@@ -1,15 +1,22 @@
-requests
-pandas
-numpy
+# WebScraping
 scrapy
 playwright
 scrapy-playwright
+
+# Data Science + Utils
+pandas
+numpy
 jupyter
 seaborn
 matplotlib
-torch
 rapidfuzz
+requests
+streamlit
+tqdm
+
+# AI + LLM + Analytics
 llama-index
 llama-index-llms-ollama
-tqdm
-streamlit
+langchain
+langchain-community
+torch
