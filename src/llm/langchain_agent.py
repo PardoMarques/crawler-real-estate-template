@@ -64,3 +64,20 @@ def run_agent(prompt):
 if __name__ == "__main__":
     resultado = run_agent("Resuma o seguinte texto: Python é uma linguagem de programação...")
     print(resultado)
+    
+
+#   SOBRE O LANGCHAIN: Como o LangChain “descobre” qual tool usar?
+#       O “pulo do gato” do AgentType.ZERO_SHOT_REACT_DESCRIPTION
+#           Quando você usa o agente do tipo ZERO_SHOT_REACT_DESCRIPTION, o LLM recebe o prompt do usuário + a descrição das tools disponíveis.
+#           O modelo então lê seu prompt (“Resuma: ...”, “Classifique: ...”) e, baseado na descrição de cada tool, decide sozinho qual ferramenta acionar — é uma inferência, não um mapeamento literal de texto para função.
+#           Por isso, o texto do seu prompt não precisa ser igual ao nome da tool, mas quanto mais claro e próximo do “intuito” da ferramenta, melhor o resultado.
+#       Como acontece “por dentro”?
+#           O LangChain monta um prompt gigante assim:
+#               Você tem as seguintes ferramentas:
+#               1. CustomSummarizer: Resumir descrições de imóveis.
+#               2. TextClassifier: Classificar tipos de anúncio.
+#               Quando receber uma pergunta ou instrução, use a ferramenta apropriada para responder.
+#               Usuário: Classifique: Apartamento com 3 dormitórios...
+#           O LLM lê o prompt, entende (com base na descrição das ferramentas) que a instrução “Classifique” pede a tool “TextClassifier”.
+#           O próprio modelo decide, usando linguagem natural, qual função acionar.
+#           Ele faz isso com base em semântica, contexto e matching de intenção (e não por palavra-chave exata).

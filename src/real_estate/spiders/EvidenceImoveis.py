@@ -41,7 +41,6 @@ class EvidenceimoveisSpider(scrapy.Spider):
             else:
                 codigo = None
             
-            
             date_str = response.headers.get('Date', b'').decode('utf-8')
             dados_basicos = {
                 "imobiliaria": "EvidenceImoveis",

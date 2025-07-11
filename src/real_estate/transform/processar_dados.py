@@ -111,7 +111,7 @@ def processar_imoveis(json_path):
         pd.DataFrame(dados_caracteristicas)
     )
 
-def salvar_csvs(df_imovel, df_endereco, df_caracteristicas, pasta='data'):
-    df_imovel.to_csv(f'{pasta}/imoveis.csv', index=False)
-    df_endereco.to_csv(f'{pasta}/enderecos.csv', index=False)
-    df_caracteristicas.to_csv(f'{pasta}/caracteristicas.csv', index=False)
+def salvar_csvs(df_imovel, df_endereco, df_caracteristicas, data_formatada):
+    df_imovel.to_csv(f'../data/scraping/processed/{data_formatada}_imoveis.csv', index=False)
+    df_endereco.to_csv(f'../data/scraping/processed/{data_formatada}_enderecos.csv', index=False)
+    df_caracteristicas.to_csv(f'../data/scraping/processed/{data_formatada}_caracteristicas.csv', index=False)
