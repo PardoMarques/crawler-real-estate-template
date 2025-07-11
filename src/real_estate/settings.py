@@ -29,7 +29,8 @@ DOWNLOAD_DELAY = 2  # Espera 2 segundos entre requests
 
 
 ITEM_PIPELINES = {
-    'real_estate.pipelines.CleanRealStatePipeline': 300,
+    'real_estate.pipelines.CleanRealStatePipeline': 200,
+    'real_estate.pipelines.LLMCleanRealStatePipeline': 300,
 }
 
 # Disable cookies (enabled by default)

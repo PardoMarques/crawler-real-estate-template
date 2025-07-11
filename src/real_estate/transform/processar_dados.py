@@ -15,7 +15,9 @@ PERIODOS_ALVO = {
         "anual": ["anual", "ano", "por ano", "anualmente", "ano."],
     }
 
-def mapear_para_essenciais(caracs, essenciais=ESSENCIAIS, threshold=80):
+PALAVRAS_CHAVE = ["condomínio", "condominio", "edifício", "edificio", "residencial", "empreendimento", "prédio", "predio"]
+
+def mapear_para_essenciais_fuzzy(caracs, essenciais=ESSENCIAIS, threshold=80):
     resultado = {essencial: False for essencial in essenciais}
     for c in caracs:
         c_l = c.strip().lower()
@@ -39,6 +41,17 @@ def parse_valor_periodo_fuzzy(campo):
             break
     return valor, periodo
 
+# texto = descricao do imóvel
+# threshold significa a porcentagem mínima de similaridade para considerar uma correspondência
+def extrair_padrao_condominio_fuzzy(texto, threshold=80):
+    palavras = texto.split()
+    for i, palavra in enumerate(palavras):
+        match, score, _ = process.extractOne(palavra.lower(), PALAVRAS_CHAVE, scorer=fuzz.partial_ratio)
+        if score >= threshold and i < len(palavras)-1:
+            nome = ' '.join(palavras[i:i+4])  # Pega a palavra-chave + possível nome
+            return nome
+    return None
+
 def processar_imoveis(json_path):
     with open(json_path, encoding='utf-8') as f:
         imoveis = json.load(f)
@@ -60,6 +73,7 @@ def processar_imoveis(json_path):
             'vagas': item.get('vagas'),
             'data_captura': item.get('data_captura'),
             'descricao': item.get('descricao'),
+            'condominio_nome': item.get('condominio_nome'),
             'iptu': item.get('iptu'),
             'iptu_periodo': item.get('iptu_periodo'),
             'condominio': item.get('condominio'),
@@ -101,27 +115,3 @@ def salvar_csvs(df_imovel, df_endereco, df_caracteristicas, pasta='data'):
     df_imovel.to_csv(f'{pasta}/imoveis.csv', index=False)
     df_endereco.to_csv(f'{pasta}/enderecos.csv', index=False)
     df_caracteristicas.to_csv(f'{pasta}/caracteristicas.csv', index=False)
-
-def extrair_condominio_ollama(texto_descricao):
-    prompt = f"""
-    No texto a seguir, identifique e retorne APENAS o nome do condomínio, se houver. Caso não exista nome, responda apenas "NÃO ENCONTRADO".
-
-    Texto: '''{texto_descricao}'''
-    """
-    response = requests.post(
-        "http://localhost:11434/api/generate",
-        json={
-            "model": "llama3",
-            "prompt": prompt,
-            "stream": False
-        }
-    )
-    result = response.json()["response"].strip()
-    # Limpa resposta genérica, se modelo for "falador"
-    if "NÃO ENCONTRADO" in result.upper():
-        return None
-    return result
-
-def aplicar_extracao_condominio(row):
-    desc = row["descricao"]
-    return extrair_condominio_ollama(desc)

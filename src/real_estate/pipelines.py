@@ -1,15 +1,18 @@
 from itemadapter import ItemAdapter
 import re
 from rapidfuzz import process, fuzz
-from real_estate.transform.processar_dados import ESSENCIAIS, mapear_para_essenciais, parse_valor_periodo_fuzzy
+from llm.ollama_client import extrair_condominio_ollama
+from real_estate.transform.processar_dados import ESSENCIAIS, mapear_para_essenciais_fuzzy, parse_valor_periodo_fuzzy, extrair_padrao_condominio_fuzzy
 
 class CleanRealStatePipeline:
     def process_item(self, item, spider):
         
         # 1. Aplica o fuzzy mapping nas características
-        essenciais = mapear_para_essenciais(item.get('caracteristicas', ESSENCIAIS, []))
+        essenciais = mapear_para_essenciais_fuzzy(item.get('caracteristicas'))
         for nome, valor in essenciais.items():
-            item[nome] = valor
+            if "caracteristicas_essenciais" not in item:
+                item["caracteristicas_essenciais"] = {}
+            item["caracteristicas_essenciais"][nome] = valor
         
         # 2. Processa os valores de preço, iptu, condominio, etc.
         preco, _ = parse_valor_periodo_fuzzy(item.get('preco'))
@@ -24,6 +27,14 @@ class CleanRealStatePipeline:
         
         return item
 
-class OllamaRealStatePipeline:
+class LLMCleanRealStatePipeline:
     def process_item(self, item, spider):
+        # identificar se palavras chaves Condominio ou Predio constam na descrição
+        temCondominio = extrair_padrao_condominio_fuzzy(item.get('descricao'))
+        if temCondominio:
+            # Se sim, extrai o nome do condomínio usando o modelo LLM
+            item['condominio_nome'] = extrair_condominio_ollama(item.get('descricao'))
+        else:
+            item['condominio_nome'] = None
+        item['condominio_nome'] = extrair_condominio_ollama(item.get('descricao'))
         return item

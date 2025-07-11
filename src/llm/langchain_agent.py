@@ -1,5 +1,6 @@
 from langchain_community.llms import Ollama
 from langchain.agents import initialize_agent, Tool, AgentType
+from llm.ollama_client import extrair_condominio_ollama
 
 # Cria uma instância do LLM (Ollama)
 llm = Ollama(model="llama3")  # Usar o modelo disponível no Ollama
@@ -28,9 +29,14 @@ def resumir_simples(text):
 # Define funções ("tools") que o agente pode usar
 tools = [
     Tool(
-        name="MEtodo exemplo de resumo",
+        name="Método exemplo de resumo",
         func=resumir_simples,   # sua função Python
         description="Resumir um texto de forma simples, retornando os primeiros 100 caracteres."
+    ),
+    Tool(
+        name="Extrair condomínio do texto",
+        func=extrair_condominio_ollama,
+        description="Extrai o nome do condomínio de uma descrição de imóvel. Retorna 'NÃO ENCONTRADO' se não houver nome."
     )
     # ,
     # Tool(
@@ -38,11 +44,6 @@ tools = [
     #     func=buscar_imoveis_no_bd,   # sua função Python
     #     description="Busca imóveis por filtros variados"
     # ),
-    # Tool(
-    #     name="Extrai características",
-    #     func=extrair_caracteristicas_ollama,
-    #     description="Extrai características do texto do imóvel"
-    # )
 ]
 
 # Inicializa o agente LangChain

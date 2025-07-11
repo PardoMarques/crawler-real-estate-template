@@ -18,12 +18,23 @@ def ask_ollama(prompt, model=MODEL, stream=False):
 
 def extrair_condominio_ollama(texto_descricao, modelo="llama3"):
     prompt = f"""
-    No texto a seguir, identifique e retorne APENAS o nome do condomínio, se houver. Caso não exista nome, responda apenas "NÃO ENCONTRADO".
+    No texto a seguir, identifique e retorne APENAS o nome do condomínio, se houver.
+    - Não escreva frases.
+    - Não explique.
+    - Não adicione pontuação extra.
+    - NÃO coloque nada além do nome, uma única palavra ou expressão.
+    - Se não encontrar, retorne apenas: NAO_ENCONTRADO
+
+    Exemplo:
+    Texto: 'Apartamento no condomínio Helbor Vivere, com lazer completo.'
+    Resposta: Helbor Vivere
+
+    Texto: 'Apartamento com lazer completo, próximo ao metrô.'
+    Resposta: NAO_ENCONTRADO
 
     Texto: '''{texto_descricao}'''
     """
     resultado = ask_ollama(prompt, model=modelo)
-    # Limpa resposta genérica, se modelo for "falador"
     if "NÃO ENCONTRADO" in resultado.upper():
         return None
     return resultado

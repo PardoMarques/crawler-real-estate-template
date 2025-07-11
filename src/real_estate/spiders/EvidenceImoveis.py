@@ -75,6 +75,7 @@ class EvidenceimoveisSpider(scrapy.Spider):
 
         endereco = ''.join(response.css('.tx-ficha span ::text').getall()).strip()
         descricao = response.css(".tx-ficha.mt-4 .tx::text").get()
+        condominio_nome = None  # Inicializa como None, será preenchido se encontrado
         iptu = response.css(".box-side .valor ul li:nth-child(1)::text").get()
         condominio = response.css(".box-side .valor ul li:nth-child(2)::text").get()
         caracteristicas = response.css(".dts-imovel li::text").getall()
@@ -95,6 +96,7 @@ class EvidenceimoveisSpider(scrapy.Spider):
             data_captura=dados.get("data_captura"),
             endereco=endereco,
             descricao=descricao,
+            condominio_nome=condominio_nome,
             iptu=iptu,
             condominio=condominio,
             caracteristicas=caracteristicas,
