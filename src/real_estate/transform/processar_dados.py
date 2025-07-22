@@ -1,4 +1,5 @@
 import json
+import os
 import pandas as pd
 import re
 from rapidfuzz import process, fuzz
@@ -52,7 +53,7 @@ def extrair_padrao_condominio_fuzzy(texto, threshold=80):
             return nome
     return None
 
-def processar_imoveis(json_path):
+def coletar_imoveis_processados(json_path):
     with open(json_path, encoding='utf-8') as f:
         imoveis = json.load(f)
 
@@ -60,28 +61,28 @@ def processar_imoveis(json_path):
     dados_endereco = []
     dados_caracteristicas = []
 
-    for item in imoveis:
+    for imovel in imoveis:
         dados_imovel.append({
-            'codigo': item.get('codigo'),
-            'imobiliaria': item.get('imobiliaria'),
-            'url_detalhes': item.get('url_detalhes'),
-            'url_img': item.get('url_img'),
-            'preco': item.get('preco'),
-            'tipo': item.get('tipo'),
-            'dormitorios': item.get('dormitorios'),
-            'metragem': item.get('metragem'),
-            'vagas': item.get('vagas'),
-            'data_captura': item.get('data_captura'),
-            'descricao': item.get('descricao'),
-            'condominio_nome': item.get('condominio_nome'),
-            'iptu': item.get('iptu'),
-            'iptu_periodo': item.get('iptu_periodo'),
-            'condominio': item.get('condominio'),
-            'condominio_periodo': item.get('condominio_periodo')
+            'codigo': imovel.get('codigo'),
+            'imobiliaria': imovel.get('imobiliaria'),
+            'url_detalhes': imovel.get('url_detalhes'),
+            'url_img': imovel.get('url_img'),
+            'preco': imovel.get('preco'),
+            'tipo': imovel.get('tipo'),
+            'dormitorios': imovel.get('dormitorios'),
+            'metragem': imovel.get('metragem'),
+            'vagas': imovel.get('vagas'),
+            'data_captura': imovel.get('data_captura'),
+            'descricao': imovel.get('descricao'),
+            'condominio_nome': imovel.get('condominio_nome'),
+            'iptu': imovel.get('iptu'),
+            'iptu_periodo': imovel.get('iptu_periodo'),
+            'condominio': imovel.get('condominio'),
+            'condominio_periodo': imovel.get('condominio_periodo')
         })
 
         rua, bairro, cidade, estado = None, None, None, None
-        endereco = item.get('endereco') or ''
+        endereco = imovel.get('endereco') or ''
         partes = [p.strip() for p in endereco.split(',')]
         if len(partes) >= 3:
             rua = partes[0]
@@ -92,7 +93,7 @@ def processar_imoveis(json_path):
             else:
                 cidade = cidade_estado
         dados_endereco.append({
-            'codigo_imovel': item.get('codigo'),
+            'codigo_imovel': imovel.get('codigo'),
             'rua': rua,
             'bairro': bairro,
             'cidade': cidade,
@@ -101,8 +102,8 @@ def processar_imoveis(json_path):
 
         ess = {}
         for essencial in ESSENCIAIS:
-            ess[essencial] = item.get(essencial, False)
-        ess['codigo_imovel'] = item.get('codigo')
+            ess[essencial] = imovel.get(essencial, False)
+        ess['codigo_imovel'] = imovel.get('codigo')
         dados_caracteristicas.append(ess)
 
     return (
@@ -111,7 +112,22 @@ def processar_imoveis(json_path):
         pd.DataFrame(dados_caracteristicas)
     )
 
-def salvar_csvs(df_imovel, df_endereco, df_caracteristicas, data_formatada):
-    df_imovel.to_csv(f'../data/scraping/processed/{data_formatada}_imoveis.csv', index=False)
-    df_endereco.to_csv(f'../data/scraping/processed/{data_formatada}_enderecos.csv', index=False)
-    df_caracteristicas.to_csv(f'../data/scraping/processed/{data_formatada}_caracteristicas.csv', index=False)
+def criar_pastas(date_YMD, date_HMS):
+    base_path = f"../data/scraping/{date_YMD}"
+    os.makedirs(f"{base_path}/raw/{date_HMS}", exist_ok=True)
+    os.makedirs(f"{base_path}/processed/{date_HMS}", exist_ok=True)
+    return base_path
+
+def salvar_csvs(df_imovel, df_endereco, df_caracteristicas, date_YMD, date_HMS):
+    processed_path = f'../data/scraping/{date_YMD}/processed/{date_HMS}'
+    os.makedirs(processed_path, exist_ok=True)
+    df_imovel.to_csv(f'{processed_path}/imoveis.csv', index=False)
+    df_endereco.to_csv(f'{processed_path}/enderecos.csv', index=False)
+    df_caracteristicas.to_csv(f'{processed_path}/caracteristicas.csv', index=False)
+
+def salvar_parquets(df_imovel, df_endereco, df_caracteristicas, date_YMD, date_HMS):
+    processed_path = f'../data/scraping/{date_YMD}/processed/{date_HMS}'
+    os.makedirs(processed_path, exist_ok=True)
+    df_imovel.to_parquet(f'{processed_path}/imoveis.parquet', index=False, engine='pyarrow')
+    df_endereco.to_parquet(f'{processed_path}/enderecos.parquet', index=False, engine='pyarrow')
+    df_caracteristicas.to_parquet(f'{processed_path}/caracteristicas.parquet', index=False, engine='pyarrow')

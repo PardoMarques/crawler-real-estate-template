@@ -17,7 +17,11 @@ class EvidenceimoveisSpider(scrapy.Spider):
         for bloco in blocos_imoveis:
             url_detalhes = bloco.css("a.link::attr(href)").get()
             url_img = bloco.css("img.lazy-cover::attr(src)").get()
-            preco = bloco.css("span.valor::text").get()
+            preco_text = bloco.css("span.valor::text").get()
+            if " / R$ " in preco_text:
+                preco = preco_text.split(" / R$ ")[1]
+            else:
+                preco = preco_text
             h2 = bloco.css("h2")
             bairro = h2.css("::text").get().strip().replace(',', '')
             cidade = h2.css("span::text").get()
@@ -89,9 +93,9 @@ class EvidenceimoveisSpider(scrapy.Spider):
             bairro=dados.get("bairro"),
             cidade=dados.get("cidade"),
             tipo=dados.get("tipo"),
-            dormitorios=dados.get("dormitorios"),
-            metragem=dados.get("metragem"),
-            vagas=dados.get("vagas"),
+            dormitorios=int(dados.get("dormitorios")),
+            metragem=int(dados.get("metragem")),
+            vagas=int(dados.get("vagas")),
             data_captura=dados.get("data_captura"),
             endereco=endereco,
             descricao=descricao,
