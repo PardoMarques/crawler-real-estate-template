@@ -96,6 +96,8 @@ Ao rodar o `main.py`, a seguinte estrutura será criada automaticamente:
 │   └── ...
 ```
 
+![Exemplo de Extração](https://raw.githubusercontent.com/PardoMarques/crawler-real-estate-template/refs/heads/main/extracao.png)
+
 ---
 
 ## 🧠 Integração com LLM
