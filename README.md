@@ -1,71 +1,144 @@
-# ds_real_estate_analysis
+# 🏘️ crawler-real-estate-template
 
-Projeto de Data Science voltado à análise de dados do mercado imobiliário, utilizando webscraping dinâmico (Playwright, Scrapy) e técnicas avançadas de Machine Learning/Deep Learning.
+Template estruturado para scraping de imóveis com foco em extração limpa, anização modular e pronto para uso em Data Science, integração com LLMs e ortação em CSV/Parquet.
 
 ---
 
-## Instalação e execução rápida
+## 🚀 Objetivo
 
-### 1. Clone este repositório
+Este repositório serve como **modelo base** para projetos de scraping do cado imobiliário. A estrutura foi pensada para:
 
-```bash
-git clone https://github.com/pardomarques/ds_real_estate_analysis.git
-cd ds_real_estate_analysis
+- Separar a coleta (`scrapy` + `playwright`) da transformação dos dados.
+- Exportar dados diretamente para análises.
+- Enriquecer os resultados com técnicas de **fuzzy matching** e **modelos **.
+
+---
+
+## ⚙️ Requisitos
+
+### 📦 Dependências (requirements.txt)
+
+```txt
+# WebScraping
+scrapy
+playwright
+scrapy-playwright
+
+# Data Science + Utils
+pandas
+rapidfuzz
+requests
+streamlit
+pyarrow
+
+# LLM
+llama-index
+llama-index-llms-ollama
+langchain
+langchain-community
 ```
 
-### 2. Crie e ative um ambiente virtual
+---
 
-**Windows:**
+## 📥 Instalação
 
-```bash
-python -m venv .venv
-.venv\Scripts\activate
-```
-
-**Linux/Mac:**
+> Recomendado: ambiente virtual (venv ou conda)
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-```
+# Clone o repositório
+git clone https://github.com/seu-usuario/crawler-real-estate-template.git
+cd crawler-real-estate-template
 
-### 3. Instale as dependências
-
-```bash
+# Instale as dependências
 pip install -r requirements.txt
-```
 
-> **Obs.:** Para rodar o Playwright, é necessário instalar os browsers uma única vez:
-
-```bash
+# Instale o Playwright
 playwright install
 ```
 
-### 4. Execute os scripts principais
+---
+
+## ▶️ Execução
+
+O pipeline completo é iniciado via `main.py`, que:
+
+1. Executa o spider Scrapy com Playwright.
+2. Processa e organiza os dados coletados.
+3. Salva arquivos CSV e Parquet em pastas nomeadas por data/hora.
 
 ```bash
-python src/collect.py
-python src/normalize.py
-jupyter notebook notebooks/exploracao_inicial.ipynb
+python main.py
+```
+
+Exemplo de saída no terminal:
+
+```
+Iniciando o pipeline de scraping para EvidenceImoveis - 2025_07_28 14_03_10
+Pipeline finalizado!
 ```
 
 ---
 
-## Organização
+## 📂 Onde os dados são salvos?
 
-- `src/` — Scripts de coleta (Scrapy/Playwright), normalização, banco de dados e utilidades.
-- `data/` — Dados brutos e processados (não são versionados).
-- `notebooks/` — Análises, explorações e modelos de ML/DL.
-- `docs/` — Documentos e imagens.
+Ao rodar o `main.py`, a seguinte estrutura será criada automaticamente:
+
+```
+/data/YYYY_MM_DD/
+├── raw/
+│   └── HH_MM_SS/
+│       └── EvidenceImoveis.json
+├── processed/
+│   ├── imovel.csv
+│   ├── endereco.csv
+│   ├── caracteristicas.csv
+│   ├── imovel.parquet
+│   └── ...
+```
 
 ---
 
-## Observações
+## 🧠 Integração com LLM
 
-- O projeto no momento não tem fins financeiros
+O pipeline `LLMCleanRealStatePipeline` detecta nomes de condomínios em crições usando LLMs locais (via Ollama).
+
+⚙️ Verifique o funcionamento do Ollama e o modelo LLM instalado no script:
+
+```python
+from llm.ollama_client import extrair_condominio_ollama
+```
 
 ---
 
-## OBJETIVO:
+## 📌 Exemplo de Spider
 
-- Aplicar todos os conceitos apresentados na ISTQB CT-AI
+A pasta `spiders/` contém exemplos reais, como o `EvidenceImoveis.py` ou o `VisaoGlobalImoveis.py`, que cadastram imóveis em São Paulo com critérios definidos.  
+A estrutura pode ser adaptada para qualquer outro portal, MAS seguindo majoritariamente a classe definida em Items, para que toda integração de análise dos dados possam futuramente obter sucesso.
+
+---
+
+## CONTRIBUIÇÃO:
+
+## Pull Requests serão bem-vindos!
+
+## MAS neste momento ainda estou organizando a base principal
+
+---
+
+## 🧭 Roadmap Futuro (próximas versões)
+
+- [ ] Dashboard com Streamlit
+- [ ] Arquitetura LLM -> Boas Práticas + Prompt Engineering
+- [ ] Disponibilizar curso gratuíto para utilização do template
+
+---
+
+## 📄 Licença
+
+MIT License.
+
+---
+
+## 👨‍💻 Autor
+
+Projeto iniciado por [Caio Marques](https://github.com/pardomarques), com o intuito de promover scraping ético e padronizado no mercado imobiliário brasileiro.
