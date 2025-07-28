@@ -5,14 +5,9 @@ scrapy-playwright
 
 # Data Science + Utils
 pandas
-# numpy
-# jupyter
-# seaborn
-# matplotlib
 rapidfuzz
 requests
 streamlit
-# tqdm
 pyarrow
 
 # AI + LLM + Analytics
@@ -20,4 +15,3 @@ llama-index
 llama-index-llms-ollama
 langchain
 langchain-community
-# torch
